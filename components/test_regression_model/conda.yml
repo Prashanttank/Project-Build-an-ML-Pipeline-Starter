@@ -11,4 +11,4 @@ dependencies:
   - pip:
       - wandb==0.13.9
       - mlflow==2.8.1
-      - git+https://github.com/prashant.tank/Project-Build-an-ML-Pipeline-Starter.git#egg=wandb-utils&subdirectory=components
+      - git+https://github.com/Prashanttank/Project-Build-an-ML-Pipeline-Starter.git#egg=wandb-utils&subdirectory=components
