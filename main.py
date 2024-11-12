@@ -1,5 +1,4 @@
 import json
-
 import mlflow
 import tempfile
 import os
@@ -16,14 +15,12 @@ _steps = [
     # NOTE: We do not include this in the steps so it is not run by mistake.
     # You first need to promote a model export to "prod" before you can run this,
     # then you need to run this step explicitly
-#    "test_regression_model"
+    # "test_regression_model"
 ]
-
 
 # This automatically reads in the configuration
 @hydra.main(config_path="", config_name="config", version_base=None)
 def go(config: DictConfig):
-
     # Setup the wandb experiment. All runs will be grouped under this name
     os.environ["WANDB_PROJECT"] = config["main"]["project_name"]
     os.environ["WANDB_RUN_GROUP"] = config["main"]["experiment_name"]
@@ -81,7 +78,7 @@ def go(config: DictConfig):
             _ = mlflow.run(
                 f"{config['main']['components_repository']}/train_val_test_split",
                 'main',
-                parameters = {
+                parameters={
                     "input": "clean_sample.csv:latest",
                     "test_size": config['modeling']['test_size'],
                     "random_seed": config['modeling']['random_seed'],
@@ -112,12 +109,12 @@ def go(config: DictConfig):
 
         if "test_regression_model" in active_steps:
             _ = mlflow.run(
-                f"{config['main']['components_repository2']}/test_regression_model",
+                f"{config['main']['components_repository']}/test_regression_model",
                 'main',
                 parameters={
                     "mlflow_model": "random_forest_export:prod",
                     "test_dataset": "test_data.csv:latest"
-                },
+                }
             )
 
 if __name__ == "__main__":
